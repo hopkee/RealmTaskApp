@@ -47,9 +47,14 @@ class TasksTVC: UITableViewController {
         
     }
     
+    @IBAction func editRowsBtn(_ sender: UIBarButtonItem) {
+        tableView.isEditing.toggle()
+        sender.title = tableView.isEditing ? "Done" : "Edit"
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchData()
+        loadTasks()
     }
 
     // MARK: - Table view data source
@@ -61,34 +66,36 @@ class TasksTVC: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell", for: indexPath)
         cell.textLabel?.text = tasks[indexPath.row].title
-        cell.detailTextLabel?.text = tasks[indexPath.row].date.description
+        cell.detailTextLabel?.text = tasks[indexPath.row].subtasks.count.description
         return cell
     }
 
-    /*
-    // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
-    */
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "GoToDetailedView", sender: indexPath.row)
+    }
+
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let renameBtn = UIContextualAction(style: .normal, title: "Rename") { [weak self] _, _, _ in
             
             let alert = UIAlertController(title: "Rename task", message: "", preferredStyle: .alert)
             
             let actionRename = UIAlertAction(title: "Rename", style: .default) { [weak self] _ in
-                if let newTitle = alert.textFields?.first,
-                   let text = newTitle.text, text != "",
+                if let newTitle = alert.textFields?.first?.text, newTitle != "",
+                   let task = self?.tasks[indexPath.row],
                    let self = self {
-                    
+                    DataManager.renameTask(task, newTitle)
+                    self.tableView.reloadRows(at: [indexPath], with: .automatic)
                 }
             }
             let actionCancel = UIAlertAction(title: "Cancel", style: .destructive)
             
             alert.addTextField { textField in
-                textField.placeholder = "new name"
+                textField.placeholder = "New name"
             }
             alert.addAction(actionRename)
             alert.addAction(actionCancel)
@@ -99,6 +106,10 @@ class TasksTVC: UITableViewController {
         
         let deleteBtn = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
             
+            let taskToDelete = self.tasks[indexPath.row]
+            self.tasks.remove(at: indexPath.row)
+            DataManager.deleteTask(taskToDelete)
+            tableView.deleteRows(at: [indexPath], with: .fade)
             
         }
         
@@ -114,34 +125,30 @@ class TasksTVC: UITableViewController {
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
- 
-
-    /*
-    // Override to support rearranging the table view.
+    
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
 
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
+ 
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the item to be re-orderable.
         return true
     }
-    */
 
-    /*
+
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if let detailedView = segue.destination as? DetailedTasksTVC,
+        let indexPath = sender as? Int {
+            detailedView.selectedTask = tasks[indexPath]
+            detailedView.updateTasksTableClosure = {
+                self.tableView.reloadData()
+            }
+        }
     }
-    */
-    
-    private func fetchData() {
+
+    private func loadTasks() {
         tasks = DataManager.getAllTasks()
         tableView.reloadData()
     }

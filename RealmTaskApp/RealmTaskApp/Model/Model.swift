@@ -12,6 +12,7 @@ class Task: Object {
     @Persisted var title: String
     @Persisted var detailText: String
     @Persisted var date = Date()
+    @Persisted var subtasks: List<Subtask>
     
     convenience init(title: String, detailedText: String) {
         self.init()
@@ -19,6 +20,19 @@ class Task: Object {
         self.detailText = detailedText
     }
     
+}
+
+class Subtask: Object {
+    @Persisted var title: String
+    @Persisted var detailText: String
+    @Persisted var date = Date()
+    @Persisted(originProperty: "subtasks") var task: LinkingObjects<Task>
+    
+    convenience init(title: String, detailedText: String) {
+        self.init()
+        self.title = title
+        self.detailText = detailedText
+    }
 }
 
 extension Results {

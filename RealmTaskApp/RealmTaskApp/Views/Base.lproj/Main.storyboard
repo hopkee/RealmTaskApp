@@ -25,21 +25,21 @@
                         </segmentedControl>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TaskCell" textLabel="3eL-JQ-3hF" detailTextLabel="xk7-bK-vex" style="IBUITableViewCellStyleValue1" id="FhP-F9-HNf">
-                                <rect key="frame" x="0.0" y="76.5" width="414" height="43.5"/>
+                                <rect key="frame" x="0.0" y="76.5" width="414" height="44.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="FhP-F9-HNf" id="fYU-0B-lC1">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3eL-JQ-3hF">
-                                            <rect key="frame" x="20" y="15" width="25" height="14.5"/>
+                                            <rect key="frame" x="20" y="12" width="28.5" height="20.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                            <fontDescription key="fontDescription" name="SinhalaSangamMN-Bold" family="Sinhala Sangam MN" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xk7-bK-vex">
-                                            <rect key="frame" x="361" y="15" width="33" height="14.5"/>
+                                            <rect key="frame" x="361" y="16" width="33" height="14.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
                                             <nil key="textColor"/>
@@ -61,7 +61,11 @@
                                     <action selector="addNewTaskBtn:" destination="TRh-xU-Zlz" id="VZ3-7i-8m4"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem style="plain" systemItem="edit" id="iOE-KE-lv2"/>
+                            <barButtonItem title="Edit" style="plain" id="iOE-KE-lv2">
+                                <connections>
+                                    <action selector="editRowsBtn:" destination="TRh-xU-Zlz" id="ZHY-u9-uuu"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
@@ -72,7 +76,7 @@
             </objects>
             <point key="canvasLocation" x="451" y="42"/>
         </scene>
-        <!--Detailed TasksTVC-->
+        <!--Subtasks-->
         <scene sceneID="lBR-eB-Fep">
             <objects>
                 <tableViewController id="L1r-As-bCS" customClass="DetailedTasksTVC" customModule="RealmTaskApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -81,7 +85,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="27z-xC-cxG" detailTextLabel="wX2-w3-euT" style="IBUITableViewCellStyleSubtitle" id="nm2-gb-PKp">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubtaskCell" textLabel="27z-xC-cxG" detailTextLabel="wX2-w3-euT" style="IBUITableViewCellStyleSubtitle" id="nm2-gb-PKp">
                                 <rect key="frame" x="0.0" y="44.5" width="414" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nm2-gb-PKp" id="68B-bY-0of">
@@ -111,7 +115,20 @@
                             <outlet property="delegate" destination="L1r-As-bCS" id="Fbz-mT-47t"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="SdH-eU-tS8"/>
+                    <navigationItem key="navigationItem" title="Subtasks" id="SdH-eU-tS8">
+                        <rightBarButtonItems>
+                            <barButtonItem style="plain" systemItem="add" id="vCE-2y-4Xf">
+                                <connections>
+                                    <action selector="addNewSubtasks:" destination="L1r-As-bCS" id="l0v-8R-iIw"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem style="plain" systemItem="edit" id="AdL-BD-KsB">
+                                <connections>
+                                    <action selector="editSubtasks:" destination="L1r-As-bCS" id="c2E-0d-mWQ"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Qb-RP-Zv0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -121,8 +138,8 @@
         <scene sceneID="t0X-k5-67M">
             <objects>
                 <navigationController id="iUN-Us-huC" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="5rZ-KX-Esu">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="5rZ-KX-Esu">
+                        <rect key="frame" x="0.0" y="44" width="414" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>

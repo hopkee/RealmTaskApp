@@ -15,9 +15,9 @@ class DataManager {
         let realm = try! Realm()
         
         do {
-            try realm.write({
+            try realm.write {
                 realm.add(newTask)
-            })
+            }
         } catch let Error {
             print("Error in writing data: \(debugPrint(Error))")
         }
@@ -37,9 +37,9 @@ class DataManager {
         let realm = try! Realm()
         
         do {
-            try realm.write({
+            try realm.write {
                 realm.delete(taskToDelete)
-            })
+            }
         } catch let Error {
             print("Error in deleting task: \(debugPrint(Error))")
         }
@@ -51,9 +51,9 @@ class DataManager {
         let realm = try! Realm()
         
         do {
-            try realm.write({
+            try realm.write {
                 realm.deleteAll()
-            })
+            }
         } catch let Error {
             print("Error in deleting data: \(debugPrint(Error))")
         }
@@ -65,11 +65,51 @@ class DataManager {
         let realm = try! Realm()
         
         do {
-            try realm.write({
+            try realm.write {
                 task.title = newName
-            })
+            }
         } catch let Error {
             print("Error in writing data: \(debugPrint(Error))")
+        }
+        
+    }
+    
+    static func getAllSubtasksFromTask(_ task: Task) -> [Subtask] {
+        
+        let realm = try! Realm()
+        let allSubtasks = realm.objects(Subtask.self)
+        let subtasksOfTask = allSubtasks.where {
+            $0.task == task
+        }
+        
+        return (subtasksOfTask.toArray(ofType: Subtask.self))
+        
+    }
+    
+    static func addNewSubtask(_ newSabtask: Subtask, for task: Task) {
+        
+        let realm = try! Realm()
+        
+        do {
+            try realm.write {
+                task.subtasks.append(newSabtask)
+            }
+        } catch let Error {
+            print("Error in writing data: \(debugPrint(Error))")
+        }
+        
+    }
+    
+    static func deleteSubtask(_ subtaskToDelete: Subtask) {
+        
+        let realm = try! Realm()
+        
+        do {
+            try realm.write {
+                realm.delete(subtaskToDelete)
+            }
+        } catch let Error {
+            print("Error in deleting task: \(debugPrint(Error))")
         }
         
     }
