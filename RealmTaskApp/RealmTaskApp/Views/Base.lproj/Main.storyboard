@@ -7,7 +7,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Root View Controller-->
+        <!--All tasks-->
         <scene sceneID="8xl-25-JKI">
             <objects>
                 <tableViewController id="TRh-xU-Zlz" customClass="TasksTVC" customModule="RealmTaskApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -24,7 +24,7 @@
                             </segments>
                         </segmentedControl>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="3eL-JQ-3hF" detailTextLabel="xk7-bK-vex" style="IBUITableViewCellStyleValue1" id="FhP-F9-HNf">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TaskCell" textLabel="3eL-JQ-3hF" detailTextLabel="xk7-bK-vex" style="IBUITableViewCellStyleValue1" id="FhP-F9-HNf">
                                 <rect key="frame" x="0.0" y="76.5" width="414" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="FhP-F9-HNf" id="fYU-0B-lC1">
@@ -54,7 +54,7 @@
                             <outlet property="delegate" destination="TRh-xU-Zlz" id="Jjn-86-te4"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="dqj-fo-D6o">
+                    <navigationItem key="navigationItem" title="All tasks" id="dqj-fo-D6o">
                         <rightBarButtonItems>
                             <barButtonItem style="plain" systemItem="add" id="6pe-Ep-ast">
                                 <connections>

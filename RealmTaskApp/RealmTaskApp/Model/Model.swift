@@ -9,9 +9,16 @@ import Foundation
 import RealmSwift
 
 class Task: Object {
-    @Persisted var title: String?
-    @Persisted var detailText: String?
-    @Persisted var date: Date?
+    @Persisted var title: String
+    @Persisted var detailText: String
+    @Persisted var date = Date()
+    
+    convenience init(title: String, detailedText: String) {
+        self.init()
+        self.title = title
+        self.detailText = detailedText
+    }
+    
 }
 
 extension Results {

@@ -41,7 +41,7 @@ class DataManager {
                 realm.delete(taskToDelete)
             })
         } catch let Error {
-            print("Error in writing data: \(debugPrint(Error))")
+            print("Error in deleting task: \(debugPrint(Error))")
         }
         
     }
@@ -53,6 +53,20 @@ class DataManager {
         do {
             try realm.write({
                 realm.deleteAll()
+            })
+        } catch let Error {
+            print("Error in deleting data: \(debugPrint(Error))")
+        }
+        
+    }
+    
+    static func renameTask(_ task: Task, _ newName: String) {
+        
+        let realm = try! Realm()
+        
+        do {
+            try realm.write({
+                task.title = newName
             })
         } catch let Error {
             print("Error in writing data: \(debugPrint(Error))")
