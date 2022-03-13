@@ -6,12 +6,16 @@
 //
 
 import UIKit
-import SwiftUI
 
 class TasksTVC: UITableViewController {
     
     //Variables
-    var tasks: [Task] = []
+    var uncompletedTasks: [Task] = []
+    
+    @IBAction func completedTasksBtn(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: "GoToCompletedTasks", sender: nil)
+    }
+    
 
     @IBAction func addNewTaskBtn(_ sender: UIBarButtonItem) {
         
@@ -28,8 +32,8 @@ class TasksTVC: UITableViewController {
                let self = self {
                 let newTask = Task(title: title, detailedText: description)
                 DataManager.addNewTask(newTask)
-                self.tasks.append(newTask)
-                self.tableView.insertRows(at: [IndexPath(row: self.tasks.count - 1, section: 0)], with: .automatic)
+                self.uncompletedTasks.append(newTask)
+                self.tableView.insertRows(at: [IndexPath(row: self.uncompletedTasks.count - 1, section: 0)], with: .automatic)
             }
         }
         let actionCancel = UIAlertAction(title: "Cancel", style: .destructive)
@@ -54,24 +58,27 @@ class TasksTVC: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadTasks()
+        loadData()
     }
 
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tasks.count
+        return uncompletedTasks.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell", for: indexPath)
-        cell.textLabel?.text = tasks[indexPath.row].title
-        cell.detailTextLabel?.text = tasks[indexPath.row].subtasks.count.description
+        let task = uncompletedTasks[indexPath.row]
+        cell.detailTextLabel?.text = DataManager.getUncompletedSubtasksFromTask(task).count.description
+        
+        let title = uncompletedTasks[indexPath.row].title
+        uncompletedTasks[indexPath.row].done ? (cell.textLabel?.attributedText = title.strikeThrough()) : (cell.textLabel?.attributedText = title.unStrikeThrought())
+        
         return cell
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
         return true
     }
     
@@ -86,7 +93,7 @@ class TasksTVC: UITableViewController {
             
             let actionRename = UIAlertAction(title: "Rename", style: .default) { [weak self] _ in
                 if let newTitle = alert.textFields?.first?.text, newTitle != "",
-                   let task = self?.tasks[indexPath.row],
+                   let task = self?.uncompletedTasks[indexPath.row],
                    let self = self {
                     DataManager.renameTask(task, newTitle)
                     self.tableView.reloadRows(at: [indexPath], with: .automatic)
@@ -106,32 +113,50 @@ class TasksTVC: UITableViewController {
         
         let deleteBtn = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
             
-            let taskToDelete = self.tasks[indexPath.row]
-            self.tasks.remove(at: indexPath.row)
+            let taskToDelete = self.uncompletedTasks[indexPath.row]
+            self.uncompletedTasks.remove(at: indexPath.row)
             DataManager.deleteTask(taskToDelete)
             tableView.deleteRows(at: [indexPath], with: .fade)
-            
         }
         
-        let buttonsConfiguration = UISwipeActionsConfiguration(actions: [deleteBtn, renameBtn])
-        return buttonsConfiguration
+        let rightButtonsBar = UISwipeActionsConfiguration(actions: [deleteBtn, renameBtn])
+        return rightButtonsBar
+    }
+    
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let completeBtn = UIContextualAction(style: .normal, title: "Complete") { [weak self] _, _, _ in
+            if let self = self {
+                let task = self.uncompletedTasks[indexPath.row]
+                DataManager.changeTaskStatus(task)
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                
+                let _ = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { timer in
+                    self.uncompletedTasks.remove(at: indexPath.row)
+                    self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                }
+                
+            }
+        }
+        completeBtn.backgroundColor = UIColor.systemGreen
+        
+        let leftButtonsBar = UISwipeActionsConfiguration(actions: [completeBtn])
+        leftButtonsBar.performsFirstActionWithFullSwipe = true
+        return leftButtonsBar
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let taskToDelete = tasks[indexPath.row]
-            tasks.remove(at: indexPath.row)
+            let taskToDelete = uncompletedTasks[indexPath.row]
+            uncompletedTasks.remove(at: indexPath.row)
             DataManager.deleteTask(taskToDelete)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
     
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
     }
  
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
         return true
     }
 
@@ -139,18 +164,25 @@ class TasksTVC: UITableViewController {
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let detailedView = segue.destination as? DetailedTasksTVC,
+        if let detailedView = segue.destination as? SubtasksTVC,
         let indexPath = sender as? Int {
-            detailedView.selectedTask = tasks[indexPath]
+            detailedView.selectedTask = uncompletedTasks[indexPath]
             detailedView.updateTasksTableClosure = {
+                self.tableView.reloadData()
+            }
+        }
+        if let completedTasks = segue.destination as? CompletedTVC {
+            completedTasks.updateTasksTableClosure = {
+                self.loadData()
                 self.tableView.reloadData()
             }
         }
     }
 
-    private func loadTasks() {
-        tasks = DataManager.getAllTasks()
+    private func loadData() {
+        uncompletedTasks = DataManager.getUncompletedTasks()
         tableView.reloadData()
     }
 
 }
+

@@ -7,11 +7,16 @@
 
 import UIKit
 
-class DetailedTasksTVC: UITableViewController {
+class SubtasksTVC: UITableViewController {
 
     var selectedTask: Task?
-    var subtasks: [Subtask] = []
+    var uncompletedSubtasks: [Subtask] = []
     var updateTasksTableClosure: (() -> Void)?
+    
+    @IBAction func completedTasksBtn(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: "GoToCompletedTasks", sender: nil)
+    }
+    
     
     @IBAction func addNewSubtasks(_ sender: UIBarButtonItem) {
         
@@ -30,8 +35,8 @@ class DetailedTasksTVC: UITableViewController {
                let self = self {
                 let newSubtask = Subtask(title: title, detailedText: description)
                 DataManager.addNewSubtask(newSubtask, for: selectedTask)
-                self.subtasks.append(newSubtask)
-                self.tableView.insertRows(at: [IndexPath(row: self.subtasks.count - 1, section: 0)], with: .automatic)
+                self.uncompletedSubtasks.append(newSubtask)
+                self.tableView.insertRows(at: [IndexPath(row: self.uncompletedSubtasks.count - 1, section: 0)], with: .automatic)
                 self.updateTasksTableClosure!()
             }
         }
@@ -50,73 +55,96 @@ class DetailedTasksTVC: UITableViewController {
         
     }
     
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let completeBtn = UIContextualAction(style: .normal, title: "Complete") { [weak self] _, _, _ in
+            if let self = self,
+              let closure = self.updateTasksTableClosure {
+                let subtask = self.uncompletedSubtasks[indexPath.row]
+                DataManager.changeSubtaskStatus(subtask)
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                closure()
+                
+                let _ = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { timer in
+                    self.uncompletedSubtasks.remove(at: indexPath.row)
+                    self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                }
+                
+            }
+        }
+        completeBtn.backgroundColor = UIColor.systemGreen
+        
+        let leftButtonsBar = UISwipeActionsConfiguration(actions: [completeBtn])
+        leftButtonsBar.performsFirstActionWithFullSwipe = true
+        return leftButtonsBar
+    }
+    
     @IBAction func editSubtasks(_ sender: UIBarButtonItem) {
+        tableView.isEditing.toggle()
+        sender.title = tableView.isEditing ? "Done" : "Edit"
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadSubtasks(selectedTask)
+        loadData(selectedTask)
         setUI()
     }
 
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return subtasks.count
+        return uncompletedSubtasks.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SubtaskCell", for: indexPath)
-        cell.textLabel?.text = subtasks[indexPath.row].title
-        cell.detailTextLabel?.text = subtasks[indexPath.row].detailText
+        
+        let title = uncompletedSubtasks[indexPath.row].title
+        let subtitle = uncompletedSubtasks[indexPath.row].detailText
+        uncompletedSubtasks[indexPath.row].done ? (cell.textLabel?.attributedText = title.strikeThrough()) : (cell.textLabel?.attributedText = title.unStrikeThrought())
+        uncompletedSubtasks[indexPath.row].done ? (cell.detailTextLabel?.attributedText = subtitle.strikeThrough()) : (cell.detailTextLabel?.attributedText = subtitle.unStrikeThrought())
+        
+        cell.textLabel?.text = uncompletedSubtasks[indexPath.row].title
+        cell.detailTextLabel?.text = uncompletedSubtasks[indexPath.row].detailText
         return cell
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
         return true
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let taskToDelete = subtasks[indexPath.row]
-            subtasks.remove(at: indexPath.row)
+            let taskToDelete = uncompletedSubtasks[indexPath.row]
+            uncompletedSubtasks.remove(at: indexPath.row)
             DataManager.deleteSubtask(taskToDelete)
             tableView.deleteRows(at: [indexPath], with: .fade)
             updateTasksTableClosure!()
         }
     }
-
-
-    /*
-    // Override to support rearranging the table view.
+    
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
+    
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
         return true
     }
-    */
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if let completedTasks = segue.destination as? CompletedTVC,
+        let task = selectedTask,
+        let closure = updateTasksTableClosure {
+            completedTasks.updataSubtasksTableClosure = {
+                self.loadData(task)
+                self.tableView.reloadData()
+                closure()
+            }
+        }
     }
-    */
     
-    private func loadSubtasks(_ task: Task?) {
+    private func loadData(_ task: Task?) {
         if let task = task {
-            subtasks = DataManager.getAllSubtasksFromTask(task)
+            uncompletedSubtasks = DataManager.getUncompletedSubtasksFromTask(task)
         }
     }
     

@@ -19,8 +19,8 @@
                             <rect key="frame" x="0.0" y="0.0" width="414" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
-                                <segment title="First"/>
-                                <segment title="Second"/>
+                                <segment title="A-Z"/>
+                                <segment title="Z-A"/>
                             </segments>
                         </segmentedControl>
                         <prototypes>
@@ -61,6 +61,11 @@
                                     <action selector="addNewTaskBtn:" destination="TRh-xU-Zlz" id="VZ3-7i-8m4"/>
                                 </connections>
                             </barButtonItem>
+                            <barButtonItem title="Item" image="folder" catalog="system" style="plain" id="yAZ-Ac-NnC">
+                                <connections>
+                                    <action selector="completedTasksBtn:" destination="TRh-xU-Zlz" id="pRi-Ef-ZME"/>
+                                </connections>
+                            </barButtonItem>
                             <barButtonItem title="Edit" style="plain" id="iOE-KE-lv2">
                                 <connections>
                                     <action selector="editRowsBtn:" destination="TRh-xU-Zlz" id="ZHY-u9-uuu"/>
@@ -70,6 +75,7 @@
                     </navigationItem>
                     <connections>
                         <segue destination="L1r-As-bCS" kind="show" identifier="GoToDetailedView" id="kr7-HD-j91"/>
+                        <segue destination="Em9-1f-RfM" kind="presentation" identifier="GoToCompletedTasks" id="yXo-J7-moc"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LCK-PE-CwE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -79,28 +85,28 @@
         <!--Subtasks-->
         <scene sceneID="lBR-eB-Fep">
             <objects>
-                <tableViewController id="L1r-As-bCS" customClass="DetailedTasksTVC" customModule="RealmTaskApp" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="L1r-As-bCS" customClass="SubtasksTVC" customModule="RealmTaskApp" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="5y9-fO-DWz">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubtaskCell" textLabel="27z-xC-cxG" detailTextLabel="wX2-w3-euT" style="IBUITableViewCellStyleSubtitle" id="nm2-gb-PKp">
-                                <rect key="frame" x="0.0" y="44.5" width="414" height="43.5"/>
+                                <rect key="frame" x="0.0" y="44.5" width="414" height="61.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nm2-gb-PKp" id="68B-bY-0of">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="61.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="27z-xC-cxG">
-                                            <rect key="frame" x="20" y="6" width="25" height="14.5"/>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="27z-xC-cxG">
+                                            <rect key="frame" x="20" y="10" width="32.5" height="23"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                            <fontDescription key="fontDescription" name="SinhalaSangamMN-Bold" family="Sinhala Sangam MN" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wX2-w3-euT">
-                                            <rect key="frame" x="20" y="22.5" width="40.5" height="13.5"/>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wX2-w3-euT">
+                                            <rect key="frame" x="20" y="36" width="40.5" height="13.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                             <nil key="textColor"/>
@@ -122,17 +128,52 @@
                                     <action selector="addNewSubtasks:" destination="L1r-As-bCS" id="l0v-8R-iIw"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem style="plain" systemItem="edit" id="AdL-BD-KsB">
+                            <barButtonItem title="Item" image="folder" catalog="system" style="plain" id="cJP-TF-H6w">
+                                <connections>
+                                    <action selector="completedTasksBtn:" destination="L1r-As-bCS" id="ovB-ct-gt4"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Edit" style="plain" id="AdL-BD-KsB">
                                 <connections>
                                     <action selector="editSubtasks:" destination="L1r-As-bCS" id="c2E-0d-mWQ"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
+                    <connections>
+                        <segue destination="Em9-1f-RfM" kind="presentation" identifier="GoToCompletedTasks" id="aHX-HN-1K0"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Qb-RP-Zv0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1330" y="42"/>
+            <point key="canvasLocation" x="451" y="843"/>
+        </scene>
+        <!--CompletedTVC-->
+        <scene sceneID="HMa-3v-3ag">
+            <objects>
+                <tableViewController id="Em9-1f-RfM" customClass="CompletedTVC" customModule="RealmTaskApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="fH9-VT-fz8">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CompletedTaskCell" id="ZXH-uW-5tz">
+                                <rect key="frame" x="20" y="49.5" width="374" height="43.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ZXH-uW-5tz" id="Bdy-Ra-tYR">
+                                    <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Em9-1f-RfM" id="Adp-je-Zwi"/>
+                            <outlet property="delegate" destination="Em9-1f-RfM" id="jFD-kl-12f"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XFQ-4m-3hz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1271" y="842"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="t0X-k5-67M">
@@ -151,7 +192,11 @@
             <point key="canvasLocation" x="-438" y="42"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="yXo-J7-moc"/>
+    </inferredMetricsTieBreakers>
     <resources>
+        <image name="folder" catalog="system" width="128" height="97"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
