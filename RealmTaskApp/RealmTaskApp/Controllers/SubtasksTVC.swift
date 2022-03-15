@@ -83,6 +83,7 @@ class SubtasksTVC: UITableViewController {
         sender.title = tableView.isEditing ? "Done" : "Edit"
     }
     
+    @IBOutlet weak var descriptionLbl: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -149,6 +150,9 @@ class SubtasksTVC: UITableViewController {
     }
     
     private func setUI() {
+        if let subtitle = selectedTask?.detailText {
+            descriptionLbl.text = "Description: \n" + subtitle
+        }
         navigationItem.title = selectedTask?.title
     }
 
