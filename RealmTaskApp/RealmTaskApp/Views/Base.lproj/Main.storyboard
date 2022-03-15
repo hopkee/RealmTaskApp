@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="iUN-Us-huC">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--All tasks-->
+        <scene sceneID="8xl-25-JKI">
+            <objects>
+                <tableViewController id="TRh-xU-Zlz" customClass="TasksTVC" customModule="RealmTaskApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="29z-WX-r8z">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <segmentedControl key="tableHeaderView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="aRr-ea-Npg">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="A-Z"/>
+                                <segment title="Z-A"/>
+                            </segments>
+                        </segmentedControl>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TaskCell" textLabel="3eL-JQ-3hF" detailTextLabel="xk7-bK-vex" style="IBUITableViewCellStyleValue1" id="FhP-F9-HNf">
+                                <rect key="frame" x="0.0" y="76.5" width="414" height="44.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="FhP-F9-HNf" id="fYU-0B-lC1">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3eL-JQ-3hF">
+                                            <rect key="frame" x="20" y="12" width="28.5" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" name="SinhalaSangamMN-Bold" family="Sinhala Sangam MN" pointSize="15"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xk7-bK-vex">
+                                            <rect key="frame" x="361" y="16" width="33" height="14.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="TRh-xU-Zlz" id="ads-Bo-zPE"/>
+                            <outlet property="delegate" destination="TRh-xU-Zlz" id="Jjn-86-te4"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="All tasks" id="dqj-fo-D6o">
+                        <rightBarButtonItems>
+                            <barButtonItem style="plain" systemItem="add" id="6pe-Ep-ast">
+                                <connections>
+                                    <action selector="addNewTaskBtn:" destination="TRh-xU-Zlz" id="VZ3-7i-8m4"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Item" image="folder" catalog="system" style="plain" id="yAZ-Ac-NnC">
+                                <connections>
+                                    <action selector="completedTasksBtn:" destination="TRh-xU-Zlz" id="pRi-Ef-ZME"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Edit" style="plain" id="iOE-KE-lv2">
+                                <connections>
+                                    <action selector="editRowsBtn:" destination="TRh-xU-Zlz" id="ZHY-u9-uuu"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                    <connections>
+                        <segue destination="L1r-As-bCS" kind="show" identifier="GoToDetailedView" id="kr7-HD-j91"/>
+                        <segue destination="Em9-1f-RfM" kind="presentation" identifier="GoToCompletedTasks" id="yXo-J7-moc"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LCK-PE-CwE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="451" y="42"/>
+        </scene>
+        <!--Subtasks-->
+        <scene sceneID="lBR-eB-Fep">
+            <objects>
+                <tableViewController id="L1r-As-bCS" customClass="SubtasksTVC" customModule="RealmTaskApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="5y9-fO-DWz">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="9xN-oQ-2Nl">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Task description" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UaG-BA-qBl">
+                                    <rect key="frame" x="20" y="5" width="374" height="34"/>
+                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="UaG-BA-qBl" secondAttribute="trailing" constant="20" id="3ym-KB-FGt"/>
+                                <constraint firstItem="UaG-BA-qBl" firstAttribute="leading" secondItem="9xN-oQ-2Nl" secondAttribute="leading" constant="20" id="nSd-YF-ybw"/>
+                                <constraint firstAttribute="bottom" secondItem="UaG-BA-qBl" secondAttribute="bottom" constant="5" id="qja-zS-jv0"/>
+                                <constraint firstItem="UaG-BA-qBl" firstAttribute="top" secondItem="9xN-oQ-2Nl" secondAttribute="top" constant="5" id="wqi-3y-9lZ"/>
+                            </constraints>
+                        </view>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubtaskCell" textLabel="27z-xC-cxG" detailTextLabel="wX2-w3-euT" style="IBUITableViewCellStyleSubtitle" id="nm2-gb-PKp">
+                                <rect key="frame" x="0.0" y="88.5" width="414" height="61.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nm2-gb-PKp" id="68B-bY-0of">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="61.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="27z-xC-cxG">
+                                            <rect key="frame" x="20" y="10" width="32.5" height="23"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" name="SinhalaSangamMN-Bold" family="Sinhala Sangam MN" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wX2-w3-euT">
+                                            <rect key="frame" x="20" y="36" width="40.5" height="13.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="L1r-As-bCS" id="4Fq-4n-ZRj"/>
+                            <outlet property="delegate" destination="L1r-As-bCS" id="Fbz-mT-47t"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Subtasks" id="SdH-eU-tS8">
+                        <rightBarButtonItems>
+                            <barButtonItem style="plain" systemItem="add" id="vCE-2y-4Xf">
+                                <connections>
+                                    <action selector="addNewSubtasks:" destination="L1r-As-bCS" id="l0v-8R-iIw"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Item" image="folder" catalog="system" style="plain" id="cJP-TF-H6w">
+                                <connections>
+                                    <action selector="completedTasksBtn:" destination="L1r-As-bCS" id="ovB-ct-gt4"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Edit" style="plain" id="AdL-BD-KsB">
+                                <connections>
+                                    <action selector="editSubtasks:" destination="L1r-As-bCS" id="c2E-0d-mWQ"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="descriptionLbl" destination="UaG-BA-qBl" id="7ud-ky-AKR"/>
+                        <segue destination="Em9-1f-RfM" kind="presentation" identifier="GoToCompletedTasks" id="aHX-HN-1K0"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4Qb-RP-Zv0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="451" y="843"/>
+        </scene>
+        <!--CompletedTVC-->
+        <scene sceneID="HMa-3v-3ag">
+            <objects>
+                <tableViewController id="Em9-1f-RfM" customClass="CompletedTVC" customModule="RealmTaskApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="fH9-VT-fz8">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CompletedTaskCell" id="ZXH-uW-5tz">
+                                <rect key="frame" x="20" y="49.5" width="374" height="43.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ZXH-uW-5tz" id="Bdy-Ra-tYR">
+                                    <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Em9-1f-RfM" id="Adp-je-Zwi"/>
+                            <outlet property="delegate" destination="Em9-1f-RfM" id="jFD-kl-12f"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XFQ-4m-3hz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1271" y="842"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="t0X-k5-67M">
+            <objects>
+                <navigationController id="iUN-Us-huC" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="5rZ-KX-Esu">
+                        <rect key="frame" x="0.0" y="44" width="414" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="TRh-xU-Zlz" kind="relationship" relationship="rootViewController" id="ibT-ph-SSP"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0gt-RV-ebI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-438" y="42"/>
+        </scene>
+    </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="aHX-HN-1K0"/>
+    </inferredMetricsTieBreakers>
+    <resources>
+        <image name="folder" catalog="system" width="128" height="97"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
