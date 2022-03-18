@@ -16,6 +16,20 @@ class TasksTVC: UITableViewController {
         performSegue(withIdentifier: "GoToCompletedTasks", sender: nil)
     }
     
+    @IBAction func sortingBtn(_ sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex == 0 {
+            uncompletedTasks.sort(by: {
+            $0.title.lowercased() < $1.title.lowercased()
+            })
+            tableView.reloadData()
+        } else {
+            uncompletedTasks.sort(by: {
+            $0.title.lowercased() > $1.title.lowercased()
+            })
+            tableView.reloadData()
+        }
+    }
+    
 
     @IBAction func addNewTaskBtn(_ sender: UIBarButtonItem) {
         
